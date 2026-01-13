@@ -7,7 +7,32 @@ edition = "2021"
 iced = { version = "0.14.0", features = ["wgpu", "tokio", "advanced", "canvas"] }
 sysinfo = "0.37.2"
 
+# Dépendance uniquement pour le widget
+[target.'cfg(all())'.dependencies]
+tray-icon = { version = "0.19", optional = true }
+
+[features]
+default = ["battery", "network", "disk"]
+widget = ["tray-icon"]
+battery = []
+network = []
+disk = []
+
+# Binaire principal : application complète
+[[bin]]
+name = "monitor_app"
+path = "src/main.rs"
+
+# Binaire widget : popup compact avec icône menu bar
+[[bin]]
+name = "monitor_widget"
+path = "src/bin/widget.rs"
+required-features = ["widget"]
+
+[lib]
+name = "monitor_app"
+path = "src/lib.rs"
+
 [package.metadata.bundle]
 identifier = "com.example.monitor-app"
 name = "System Monitor"
-# icon = "resources/AppIcon.icns"
